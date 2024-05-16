@@ -16,7 +16,7 @@ export const userRouter = new Hono<{
 
 userRouter.post("/signup", async(c) => { 
   const body = await c.req.json()
-  const { success } = signinInput.safeParse(body)
+  const { success } = signupInput.safeParse(body)
   if (!success) { 
     c.status(411)
     return c.json({Message : "Check Input and try again!!"})
@@ -38,21 +38,26 @@ userRouter.post("/signup", async(c) => {
       const jwt = await sign({ 
         id : user.id
       }, c.env.JWT_SECRET)
-      return c.json({jwt : "Bearer " + jwt})
+      return c.text(jwt)
     } catch (error) {
       console.log(error)
       c.status(411)
-      return c.text("Invalid Input")
+      return c.text("Server Error")
     }
   })
   
 userRouter.post("/signin", async (c) => { 
-    
+  const body = await c.req.json()
+  const { success} =  signinInput.safeParse(body)
+  if (!success) { 
+    c.status(403)
+    return c.json({
+      Message : "Invalid Input"
+    })
+  }
     const prisma = new PrismaClient({ 
       datasourceUrl : c.env.DATABASE_URL
     }).$extends(withAccelerate())
-  
-    const body = await c.req.json()
   
     try {
       const user = await prisma.user.findFirst({ 
@@ -71,9 +76,7 @@ userRouter.post("/signin", async (c) => {
       const jwt = await sign({
         id : user.id
       }, c.env.JWT_SECRET)
-      return c.json({
-        JWT : jwt
-      })
+      return c.text(jwt)
   
   
     } catch (error) {
