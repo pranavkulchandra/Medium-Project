@@ -128,6 +128,9 @@ blogRouter.get("/:id", async (c)=> {
 blogRouter.post("/post", async(c) => { 
     const body = await c.req.json()
     const { success } = createBlogInput.safeParse(body)
+
+    console.log("Validation Result", success)
+
     if ( !success) { 
         c.status(403)
         return c.json({ 
@@ -145,6 +148,8 @@ blogRouter.post("/post", async(c) => {
                 title : body.title, 
                 content : body.content,
                 autherId : userId
+            }, select : { 
+                id : true
             }
         })
         c.status(200)
@@ -153,7 +158,7 @@ blogRouter.post("/post", async(c) => {
         })
     } catch (error) {
         c.status(413)
-        return console.log(error)
+        return console.log( "Error Creating Blogs ", error)
     }
 
 })

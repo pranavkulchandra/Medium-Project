@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Heading from '@tiptap/extension-heading';
@@ -15,11 +15,11 @@ import { BackendUrl } from "../config";
 
 interface TiptapProps {
     setContent: (content: string) => void;
-    getContent : () => string;
+    
 }
 
 
-const Tiptap = ({ setContent, getContent }: TiptapProps ) => {
+const Tiptap = ({ setContent }: TiptapProps ) => {
     const editor = useEditor({
       extensions: [
         StarterKit,
@@ -40,11 +40,7 @@ const Tiptap = ({ setContent, getContent }: TiptapProps ) => {
       }
     });
 
-    // useEffect(() => { 
-    //     if (editor) { 
-    //         setContent(editor.getHTML());
-    //     }
-    // }, [editor, setContent])
+  
   
   if (!editor) { 
     return null 
@@ -114,8 +110,8 @@ const Tiptap = ({ setContent, getContent }: TiptapProps ) => {
 
 export const Publish = () => {
 
-    const [ title , setTitle ] = useState(''); 
-    const [ content , setContent ] = useState('');
+    const [ title , setTitle ] = useState<string>(''); 
+    const [ content , setContent ] = useState<string>('');
 
     const publishPost = async () => { 
         try {
@@ -150,7 +146,7 @@ export const Publish = () => {
           Blog
         </label>  
         <div className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
-            <Tiptap setContent={setContent} getContent={() => content} />
+            <Tiptap setContent={setContent} />
             <div className="flex justify-center pt-4">
                     <button onClick={publishPost} type="button" className="text-white w-32 bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2">Publish</button>
                 </div>
