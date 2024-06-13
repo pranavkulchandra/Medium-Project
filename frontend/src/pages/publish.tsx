@@ -11,6 +11,7 @@ import OrderedList from '@tiptap/extension-ordered-list';
 import CodeBlock from '@tiptap/extension-code-block';
 import axios from "axios";
 import { BackendUrl } from "../config";
+import { useNavigate } from "react-router-dom";
 
 
 interface TiptapProps {
@@ -111,7 +112,8 @@ const Tiptap = ({ setContent }: TiptapProps ) => {
 export const Publish = () => {
 
     const [ title , setTitle ] = useState<string>(''); 
-    const [ content , setContent ] = useState<string>('');
+    const [ content , setContent ] = useState<string>('');  
+    const navigate = useNavigate()
 
     const publishPost = async () => { 
         try {
@@ -120,7 +122,8 @@ export const Publish = () => {
                     "Authorization" : localStorage.getItem("token")
                 }
             })
-            console.log(resp.data)
+            console.log(resp.data.blog)
+            navigate(`/blog/${resp.data.blog.id}`)
         } catch (error) {
             console.log(error);
         }
@@ -150,8 +153,7 @@ export const Publish = () => {
             <div className="flex justify-center pt-4">
                     <button onClick={publishPost} type="button" className="text-white w-32 bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2">Publish</button>
                 </div>
-        </div>      
-        
+        </div>   
       </div>
     </div>
   );

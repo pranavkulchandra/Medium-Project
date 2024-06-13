@@ -28,4 +28,5 @@ model Blog {
   pulbished Boolean @default(false)
   auther    User    @relation(fields: [autherId], references: [id])
   autherId  String
+  isDeleted Boolean @default(false)
 }

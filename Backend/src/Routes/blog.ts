@@ -1,5 +1,5 @@
 import { createBlogInput, updateBlogInput } from "@pkulchandra/medium-common-package"
-import { PrismaClient } from "@prisma/client/edge"
+import { Prisma, PrismaClient } from "@prisma/client/edge"
 import { withAccelerate } from "@prisma/extension-accelerate"
 import { Hono } from "hono"
 import { verify } from "hono/jwt"
@@ -45,6 +45,9 @@ blogRouter.get("/bulk", async (c) => {
 
     try {
         const blog = await prisma.blog.findMany({
+            where : { 
+                isDeleted : false
+            },
             select: { 
                 title: true, 
                 content: true, 
@@ -73,7 +76,8 @@ blogRouter.get("/personal", async(c) => {
     try {
         const blogs = await prisma.blog.findMany({ 
             where : { 
-                autherId : autherId
+                autherId : autherId,
+                isDeleted : false
             }
         })
         c.status(200)
@@ -95,7 +99,8 @@ blogRouter.get("/:id", async (c)=> {
     try {
         const blog = await prisma.blog.findFirst({ 
             where : { 
-                id : id
+                id : id,
+                isDeleted : false
             }, 
             select : { 
                 content : true, 
@@ -181,7 +186,8 @@ blogRouter.put("/", async(c) => {
         const updatedBlog = await prisma.blog.update({ 
             where : { 
                 id : body.id,
-                autherId : id
+                autherId : id,
+                isDeleted : false
             }, 
             data : { 
                 title : body.title, 
@@ -197,6 +203,37 @@ blogRouter.put("/", async(c) => {
     }
 
 })
-  
+
+
+blogRouter.delete("/:id", async(c) => { 
+    const id = c.req.param("id"); 
+    const prisma = new PrismaClient({ 
+        datasourceUrl : c.env.DATABASE_URL
+    }).$extends(withAccelerate())
+
+    try {
+        const deletBlog = await prisma.blog.update({ 
+            where : { 
+                id : id, 
+                isDeleted : false 
+            }, 
+            data : { 
+                isDeleted : true
+            }
+        }); 
+        c.status(200)
+        return c.json({ 
+            Message : `${deletBlog.title} has been deleted`
+        })
+    } catch (error) {
+        console.log(error)
+        c.status(500)
+        c.json({
+            Message : `Error Deleting blog`
+        })
+    }
+})
+
+
 
 
