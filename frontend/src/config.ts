@@ -1,1 +1,1 @@
-export const BackendUrl = "https://backend.pranavkulchandra.workers.dev"
+export const BackendUrl = process.env.BackendUrl

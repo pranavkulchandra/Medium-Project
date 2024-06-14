@@ -5,7 +5,6 @@ import { LabelledInput } from "./LabelledInput"
 import { EyeIcon, EyeSlash } from "./Icons"
 import axios from "axios"
 import { BackendUrl } from "../config"
-import { split } from "postcss/lib/list"
 
 
 export const Auth =({type}: {type: "signup" | "signin"}) => { 
