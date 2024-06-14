@@ -7,6 +7,7 @@ import axios from "axios"
 import { BackendUrl } from "../config"
 
 
+
 export const Auth =({type}: {type: "signup" | "signin"}) => { 
 
     const navigate = useNavigate()
@@ -44,7 +45,7 @@ export const Auth =({type}: {type: "signup" | "signin"}) => {
                     </div>
                     <div className="text-slate-700 pb-4 text-center">
                         {type === "signup" ? "Already Have an Account?" : "Create an Account"}
-                        <Link to={type === "signup" ? "/signin" : "/signup"} className="pl-2 underline">{type === "signup" ? "Singup" : "Login"}</Link> 
+                        <Link to={type === "signup" ? "/signin" : "/signup"} className="pl-2 underline">{type === "signup" ? "Login" : "Signup"}</Link> 
                     </div>
                     </div>
                     {type === "signup" ? 
