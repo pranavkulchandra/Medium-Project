@@ -1,6 +1,5 @@
-import axios from "axios"
-import { Link, useNavigate } from "react-router-dom"
-import { BackendUrl } from "../config"
+
+import { Link } from "react-router-dom"
 
 
 interface BlogCardProps { 
@@ -12,7 +11,11 @@ interface BlogCardProps {
 }
 
 
-
+const stripHtmlTags = (html : string) => { 
+    const tempDiv = document.createElement("div"); 
+    tempDiv.innerHTML = html; 
+    return tempDiv.textContent || tempDiv.innerText || "" ;
+}
 
 
 
@@ -23,6 +26,10 @@ export const BlogCard  = ( {
     content, 
     publishedDate
  } : BlogCardProps) => { 
+
+    const plainTextContent = stripHtmlTags(content);
+    const readingTime = Math.floor(plainTextContent.length / 238)
+    console.log("title is ", content)
 
     return <div className="pt-5 border-b border-slate-200 w-screen max-w-screen-lg">
             <div className="flex ">
@@ -45,10 +52,10 @@ export const BlogCard  = ( {
                     </div>
                 </Link>
                 <div className="font-normal text-md text-slate-600">
-                    {content.slice(0,100) + "...."}
+                   <div dangerouslySetInnerHTML={{ __html :  content.slice(0,100) + "...."}} />
                 </div>
                 <div className="text-slate-500 text-sm pt-4 pb-5">
-                    {`${Math.floor(content.length / 238)} min read`}
+                    {`${readingTime} min read`}
                 </div>
     </div>
 }
@@ -61,7 +68,7 @@ export function Avatar({ name, size = "small" } : {name: string , size? : "big" 
 
  }
  
- function Dot () { 
+export function Dot () { 
     return <div className="w-1 h-1 rounded-full bg-slate-400">
 
     </div>
