@@ -1,4 +1,4 @@
-import { SignupInput } from "@pkulchandra/medium-common-package"
+
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { LabelledInput } from "./LabelledInput"
