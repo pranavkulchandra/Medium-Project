@@ -5,6 +5,7 @@ import { Blog } from './pages/Blog'
 import { Blogs } from './pages/Blogs'
 import { AppBar } from './components/AppBar'
 import { Publish } from './pages/publish'
+import { RecoilRoot } from 'recoil'
 
 
 
@@ -12,17 +13,20 @@ function App() {
 
   return (
     <>
+    <RecoilRoot>
       <BrowserRouter>
-      <AppBar />
-        <Routes>
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/" element={<Signup />} />
-          <Route path='/signin' element={<SingIn />} />
-          <Route path='/blog/:id' element={<Blog />} />
-          <Route path='/blogs' element={<Blogs />} />
-          <Route path='/publish' element={<Publish />} />
-        </Routes>
-      </BrowserRouter>
+        <AppBar />
+          <Routes>
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/" element={<Signup />} />
+            <Route path='/signin' element={<SingIn />} />
+            <Route path='/blog/:id' element={<Blog />} />
+            <Route path='/blogs' element={<Blogs />} />
+            <Route path='/publish' element={<Publish />} />
+          </Routes>
+        </BrowserRouter>
+       </RecoilRoot>
+
     </>
   )
 }

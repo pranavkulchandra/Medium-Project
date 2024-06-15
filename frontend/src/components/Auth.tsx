@@ -5,19 +5,17 @@ import { LabelledInput } from "./LabelledInput"
 import { EyeIcon, EyeSlash } from "./Icons"
 import axios from "axios"
 import { BackendUrl } from "../config"
+import { useRecoilState } from "recoil"
+import { UserState, userState } from "../store/atoms/userState"
 
 
 
 export const Auth =({type}: {type: "signup" | "signin"}) => { 
 
     const navigate = useNavigate()
-    const [postInputs, setPostInputs ]  = useState<SignupInput>({
-        email : "", 
-        password : "", 
-        name : ""
-    })
+    const [ postInputs, setPostInputs ] = useRecoilState<UserState>(userState)
 
-    async function sendRequest() {
+    async function  sendRequest() {
         try {
            const response = await axios.post(`${BackendUrl}/api/v1/user/${type==="signup" ? "signup" : "signin"}`,postInputs )
            const token = response.data;
@@ -45,7 +43,7 @@ export const Auth =({type}: {type: "signup" | "signin"}) => {
                     </div>
                     <div className="text-slate-700 pb-4 text-center">
                         {type === "signup" ? "Already Have an Account?" : "Create an Account"}
-                        <Link to={type === "signup" ? "/signin" : "/signup"} className="pl-2 underline">{type === "signup" ? "Login" : "Signup"}</Link> 
+                        <Link to={type === "signup" ? "/signin" : "/signup"} className="pl-2 underline">{type === "signup" ? "Login" : "Login"}</Link> 
                     </div>
                     </div>
                     {type === "signup" ? 

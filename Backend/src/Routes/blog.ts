@@ -37,6 +37,33 @@ blogRouter.use("/*", async (c, next) => {
 })
 
 
+blogRouter.get("/me", async(c) => { 
+    const autherId = c.get("userId")
+    console.log(autherId)
+    const prisma = new PrismaClient({ 
+        datasourceUrl : c.env.DATABASE_URL
+    }).$extends(withAccelerate())
+
+    try {
+        const autherName = await prisma.user.findFirst({ 
+            where : {
+                id : autherId
+            },
+            select : { 
+                email : true,
+                name : true
+            }
+        })
+        c.status(200)
+        return c.json(autherName)
+    } catch (error) {
+        console.log(error)
+    }
+
+})
+
+
+
 //bulk API 
 blogRouter.get("/bulk", async (c) => { 
     const prisma = new PrismaClient({ 
@@ -68,7 +95,6 @@ blogRouter.get("/bulk", async (c) => {
 
 blogRouter.get("/personal", async(c) => { 
     const autherId = c.get("userId")
-    console.log(autherId, "Test")
     const prisma = new PrismaClient({ 
         datasourceUrl : c.env.DATABASE_URL
     }).$extends(withAccelerate())
