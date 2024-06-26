@@ -11,7 +11,7 @@ export const FullBlog = ({blog } : { blog : Blogs}) => {
     const navigate = useNavigate()
     const deleteBlog = async () => { 
         try {
-            const resp = await axios.delete(`${BackendUrl}/api/v1/blog/${blog.id}`, { 
+            await axios.delete(`${BackendUrl}/api/v1/blog/${blog.id}`, { 
                 headers : { 
                     "Authorization" : localStorage.getItem("token")
                 }
