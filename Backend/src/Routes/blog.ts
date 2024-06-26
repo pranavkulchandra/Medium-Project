@@ -39,7 +39,6 @@ blogRouter.use("/*", async (c, next) => {
 
 blogRouter.get("/me", async(c) => { 
     const autherId = c.get("userId")
-    console.log(autherId)
     const prisma = new PrismaClient({ 
         datasourceUrl : c.env.DATABASE_URL
     }).$extends(withAccelerate())
@@ -51,7 +50,9 @@ blogRouter.get("/me", async(c) => {
             },
             select : { 
                 email : true,
-                name : true
+                name : true, 
+                password : true, 
+
             }
         })
         c.status(200)
@@ -249,7 +250,7 @@ blogRouter.delete("/:id", async(c) => {
         }); 
         c.status(200)
         return c.json({ 
-            Message : `${deletBlog.title} has been deleted`
+            Message : `${deletBlog.title} has been deleted`, 
         })
     } catch (error) {
         console.log(error)

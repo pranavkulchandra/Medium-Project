@@ -14,17 +14,25 @@ export const Auth =({type}: {type: "signup" | "signin"}) => {
 
     const navigate = useNavigate()
     const [ postInputs, setPostInputs ] = useRecoilState<UserState>(userState)
+    const [localInputs, setLocalInputs ] = useState({name: "", email : "", password :""})
 
     async function  sendRequest() {
         try {
-           const response = await axios.post(`${BackendUrl}/api/v1/user/${type==="signup" ? "signup" : "signin"}`,postInputs )
-           const token = response.data;
-           console.log(token)
-           if (token) { 
-            localStorage.setItem("token", token);
+           const response = await axios.post(`${BackendUrl}/api/v1/user/${type==="signup" ? "signup" : "signin"}`,localInputs )
+           const resp = response.data;
+           console.log(resp.jwt)
+           if (resp.jwt) { 
+            localStorage.setItem("token", resp.jwt);
+            setPostInputs((prevUser) => ({
+                ...prevUser, 
+                email : resp.email,
+                name : localInputs.name, 
+                password : localInputs.password
+            }))
             navigate("/blogs")
            } else {
             console.log("No JWT found")
+            alert("Invalid Credentials Please try again!! ")
            }
         } catch (error) {
             console.log(error)
@@ -33,6 +41,8 @@ export const Auth =({type}: {type: "signup" | "signin"}) => {
 
 
     const [ showPassword, setShowPassword] = useState(false)
+
+    
 
     return <div className="h-screen flex justify-center flex-col">
         <div className="flex justify-center">
@@ -48,20 +58,20 @@ export const Auth =({type}: {type: "signup" | "signin"}) => {
                     </div>
                     {type === "signup" ? 
                     <LabelledInput label="Name" placeholder="John" onChange={(e) => { 
-                        setPostInputs(c => ({
+                        setLocalInputs(c => ({
                             ...c, 
                             name : e.target.value
                         }))
                     }} /> : null } 
                     <LabelledInput label="Email" placeholder="Johm@gmail.com" onChange={(e) => { 
-                        setPostInputs(c => ({
+                        setLocalInputs(c => ({
                             ...c, 
                             email : e.target.value
                         }))
                     }}/>
                     <div className="relative">
                     <LabelledInput type={showPassword ? "text" : "password"} label="Password" placeholder="*****" onChange={(e) => { 
-                        setPostInputs(c => ({ 
+                        setLocalInputs(c => ({ 
                             ...c, 
                             password : e.target.value
                         }))                    

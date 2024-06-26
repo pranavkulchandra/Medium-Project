@@ -117,12 +117,12 @@ export const Publish = () => {
 
     const publishPost = async () => { 
         try {
+
             const resp = await axios.post(`${BackendUrl}/api/v1/blog/post`, {title, content},{ 
                 headers : { 
                     "Authorization" : localStorage.getItem("token")
                 }
             })
-            console.log(resp.data.blog)
             navigate(`/blog/${resp.data.blog.id}`)
         } catch (error) {
             console.log(error);

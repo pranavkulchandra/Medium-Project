@@ -23,7 +23,6 @@ export const useBlog = ({ id } : {id : string}) => {
             }
         })
         .then(resp => { 
-            console.log(resp.data.blog)
             setBlog(resp.data.blog)
             setLoading(false)
         })

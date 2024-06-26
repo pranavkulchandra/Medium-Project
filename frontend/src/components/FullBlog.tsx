@@ -16,7 +16,6 @@ export const FullBlog = ({blog } : { blog : Blogs}) => {
                     "Authorization" : localStorage.getItem("token")
                 }
             })
-            console.log(resp.data)
             navigate("/blogs")
         } catch (error) {
             console.log(error)

@@ -33,6 +33,9 @@ userRouter.post("/signup", async(c) => {
           name : body.name,
           password : body.password
   
+        }, select : { 
+          email : true,
+          id : true
         }
       })
       const jwt = await sign({ 
@@ -64,19 +67,22 @@ userRouter.post("/signin", async (c) => {
         where : { 
           email : body.email, 
           password : body.password
+        }, select : { 
+          email : true, 
+          id : true
         }
       })
       if(!user) { 
         c.status(403)
         return c.json({ 
-          message : "Invalid Creadentials try again!!"
+          message : "Invalid Creadentials try again!!", 
         })
       }
   
       const jwt = await sign({
         id : user.id
       }, c.env.JWT_SECRET)
-      return c.text(jwt)
+      return c.json({ jwt : jwt, email : user.email})
   
   
     } catch (error) {

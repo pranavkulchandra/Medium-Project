@@ -1,10 +1,13 @@
 import { Link, useNavigate } from "react-router-dom"
-import { Avatar } from "./BlogCard"
-import { useRecoilValue, useSetRecoilState } from "recoil"
+import {  DropDownMenu } from "./BlogCard"
+import { useRecoilState, useRecoilValue,  } from "recoil"
 import { UserState, userState } from "../store/atoms/userState"
 import { isUserEmail } from "../store/selectors/isUserEmail"
 
+
 export const AppBar = () => {
+
+
     
     const userEmail = useRecoilValue<string | null >(isUserEmail)
     
@@ -20,9 +23,11 @@ export const AppBar = () => {
 
  function IfSignedIn  () { 
 
+    
+
     const navigate = useNavigate()
 
-    const setUser = useSetRecoilState<UserState>(userState)
+    const [ user, setUser] = useRecoilState<UserState>(userState || "")
 
     const handleSignout =() => { 
         localStorage.removeItem("token")
@@ -39,6 +44,8 @@ export const AppBar = () => {
         navigate("/publish");
     }
 
+    
+
     return <div className="flex justify-between border-b px-10 py-4">
     <Link to={"/blogs"} >
         <div className="pt-2 flex justify-center flex-col cursor-pointer">
@@ -53,8 +60,9 @@ export const AppBar = () => {
             <button onClick={handleSignout}  type="button" className="text-white bg-slate-700 hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2">SigOut</button>
         </div>
         <div>
-            <Avatar size="big" name="Pranav"/>
+            <DropDownMenu name={user.name || ""} email={user.email || ""}/>
         </div>
+        
     </div>
 </div>
 

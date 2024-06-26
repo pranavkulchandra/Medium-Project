@@ -6,6 +6,8 @@ import { Blogs } from './pages/Blogs'
 import { AppBar } from './components/AppBar'
 import { Publish } from './pages/publish'
 import { RecoilRoot } from 'recoil'
+import Init from './components/Init'
+
 
 
 
@@ -16,6 +18,7 @@ function App() {
     <RecoilRoot>
       <BrowserRouter>
         <AppBar />
+        <Init />
           <Routes>
             <Route path="/signup" element={<Signup />} />
             <Route path="/" element={<Signup />} />

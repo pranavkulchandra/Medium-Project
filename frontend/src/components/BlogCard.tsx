@@ -29,7 +29,6 @@ export const BlogCard  = ( {
 
     const plainTextContent = stripHtmlTags(content);
     const readingTime = Math.floor(plainTextContent.length / 238)
-    console.log("title is ", content)
 
     return <div className="pt-5 border-b border-slate-200 w-screen max-w-screen-lg">
             <div className="flex ">
@@ -73,3 +72,25 @@ export function Dot () {
 
     </div>
  }
+
+
+ export interface DropdownProps { 
+    name : string | "",
+    email : string | "", 
+}
+
+export const DropDownMenu = ({name, email } : DropdownProps) => { 
+
+    return(
+
+             <div>
+                <Avatar name={name} size="small" />
+                <div className="px-4 py-3">
+                    <span className="block text-sm text-gray-900 dark:text-white">{name}</span>
+                    <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">{email}</span>
+                </div>
+            </div>
+    )
+
+    
+}
