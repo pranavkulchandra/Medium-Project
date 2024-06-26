@@ -13,7 +13,7 @@ import { UserState, userState } from "../store/atoms/userState"
 export const Auth =({type}: {type: "signup" | "signin"}) => { 
 
     const navigate = useNavigate()
-    const [ postInputs, setPostInputs ] = useRecoilState<UserState>(userState)
+    const [ , setPostInputs ] = useRecoilState<UserState>(userState)
     const [localInputs, setLocalInputs ] = useState({name: "", email : "", password :""})
 
     async function  sendRequest() {
